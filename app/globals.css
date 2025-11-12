@@ -1,4 +1,11 @@
-@import "tailwindcss";
+/*
+ * 1. Tailwind CSS와 기본 Next.js 설정
+ * 기존 globals.css의 내용을 그대로 유지합니다.
+ * Tailwind는 Utility Class를 제공하지만, style.css의 많은 커스텀 ID/Class는 그대로 필요합니다.
+*/
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 :root {
   --background: #ffffff;
@@ -8,8 +15,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* --font-sans: var(--font-geist-sans); Tailwind 사용 시 주석 처리 또는 제거 */
+  /* --font-mono: var(--font-geist-mono); */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,8 +26,550 @@
   }
 }
 
+/*
+ * 2. 기존 style.css의 내용을 이어서 통합합니다.
+ * Tailwind의 기본 body 스타일을 덮어씁니다.
+*/
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    /* 기존 style.css의 body 스타일 적용 */
+    font-family: Arial, sans-serif;
+    background-color: #1a202c; /* Nightfall 배경: 아주 어두운 블루-그레이 */
+    color: #e2e8f0; /* 일반 텍스트: 밝은 회색 */
+    margin: 0;
+    padding: 20px 0px;
+    overflow-x: hidden;
+    line-height: 1.6;
 }
+
+/* 3. style.css의 나머지 모든 스타일을 그대로 통합 */
+/* ------------------------------------------- */
+
+div#disqus_thread iframe[sandbox] {
+max-height: 0px !important;
+}
+
+.container {    
+    display: inline-flex; 
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 100vw; 
+    margin:0 auto;
+}
+
+#left_panel {   
+    order:1;
+    min-width: 300px;
+    padding: 0;
+    box-sizing: border-box;
+    max-width: 850px; 
+}
+
+#right_button {
+    width: 15px; 
+    height: 100vh; 
+    padding: 45vh 0 45vh 0;    
+    margin:0 5px 0 30px;    
+    box-sizing: border-box;
+    order:2;
+}
+
+/* --- Right Panel (iframe 및 URL 입력) --- */
+#right_panel {
+    display:none;
+    order:3;
+    max-width: 450px; 
+    position: sticky; 
+    height: 100vh; 
+    padding: 0 10px;
+    margin-left: 20px;
+    box-sizing: border-box;
+}
+
+.url-iframe-panel h2 {
+    margin-top: 0;
+    color: #90a4ae;
+    border-bottom: 1px solid #4a5568;
+    padding-bottom: 5px;
+}
+
+.url-input-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#url-input-mobile, #url-input-desktop {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #667e91;
+    background-color: #4a5568;
+    color: #e2e8f0;
+    border-radius: 5px 0 0 5px;
+    border-right: none;
+}
+
+#load-url-btn-mobile, #load-url-btn-desktop {
+    padding: 8px 15px;
+    background-color: #6a809b;
+    color: #1a202c;
+    border: none;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    font-weight: bold;
+}
+
+#load-url-btn-mobile:hover, #load-url-btn-desktop:hover {
+    background-color: #7f97b5;
+}
+
+#content-frame-mobile, #content-frame-desktop {
+    border: 1px solid #667e91;
+    background-color: #fff; 
+}
+
+#content-frame-desktop {
+    width: 100%;
+    height: calc(100vh - 240px); 
+    border-radius:5px;
+}
+
+/* 데스크톱 전용 및 모바일 전용 클래스 설정 */
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none;
+}
+/* ------------------------------------------- */
+
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 제목 색상: 중간 톤의 블루-그레이 */
+h1 {
+    color: #90a4ae; 
+}
+
+h2 {
+    color: #90a4ae;
+    margin-top: 0;
+    border-bottom: 1px solid #4a5568; 
+    padding-bottom: 5px;
+}
+
+/* 섹션 중앙 정렬 및 가독성 폭 제한 */
+.file-list-section, .text-viewer-section, .control-section {
+    margin: 0 auto 30px auto; 
+    padding: 15px; 
+    width:100%;
+    max-width: 850px; 
+}
+
+.disqus-section {
+    display:none;
+    margin-top: 60px;
+    width: 95%;
+    margin: 60px auto 0 auto;
+    max-width: 800px;
+}
+
+/* --- Drop Area --- */
+#full-screen-drop-area {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    height: 45%;
+    margin:-200px 0 0 -25%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #90a4ae;
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    border: 5px dashed #90a4ae;
+    pointer-events: auto;
+    text-align: center;
+}
+
+/* --- Controls Section (오디오 컨트롤) --- */
+.control-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    gap: 15px;
+    flex-wrap: wrap; 
+    background-color: #2d3748; 
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.control-section h2 {
+    display: none;
+}
+
+.control-section label {
+    display: inline;
+}
+
+/* 👇 수정: #controler_wrap을 세로 Flex 컨테이너로 설정 */
+#controler_wrap{
+    width: 65%;
+    display: flex;
+    flex-direction: column; 
+    gap: 10px; 
+}
+
+/* 👇 추가: 목소리 선택 래퍼 */
+#voice-control-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* 👇 추가: 재생 속도 래퍼 (요청된 순서대로 한 줄 배치) */
+#rate-control-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.playback-controls {
+    display: inline-flex; 
+    flex-flow: row wrap;
+    justify-content:center;   
+    gap: 0;
+    border-radius: 5px; 
+    overflow: hidden; 
+    width:100%;
+    margin:0 auto;
+}
+
+/* 👇 수정: Flexbox에 맞춰 float 제거 및 정렬, 너비 설정 */
+#rate-display {
+    display: block;
+    min-width: 25px; 
+    text-align: right;
+}
+
+/* 👇 수정: 목소리 선택 박스가 남은 공간을 채우도록 설정 */
+#voice-select {
+    flex-grow: 1; 
+    padding: 8px;
+    background-color: #4a5568; 
+    border: 1px solid #667e91;
+    color: #e2e8f0;
+    border-radius: 5px;
+}
+
+/* 👇 수정: 재생 속도 슬라이더가 남은 공간을 채우도록 설정 */
+#rate-slider {
+    flex-grow: 1; 
+    padding: 8px;
+    background-color: #4a5568; 
+    border: 1px solid #667e91;
+    color: #e2e8f0;
+    border-radius: 5px;
+}
+
+/* 버튼 기본 색상: 중간 톤의 블루-그레이 */
+.playback-controls button, #clear-all-files-btn {
+    margin-right:5px;
+    background-color: #6a809b; 
+    color: #1a202c; 
+    border: none;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius:5px;
+}
+
+.playback-controls label {
+    margin:0 15px;
+    border-radius:5px;
+}
+
+#clear-all-files-btn {
+    border-radius: 5px;
+}
+
+/* 버튼 호버 색상: 약간 밝은 블루-그레이 */
+#play-pause-btn:hover, #stop-btn:hover, #prev-file-btn:hover, #next-file-btn:hover, #clear-all-files-btn:hover {
+    background-color: #7f97b5;
+}
+
+
+#sponser{
+    width:30%;
+    margin: 0; margin-left: auto; text-align:center;
+}
+
+#sponser span a, a:hover, a:visited, a:link {
+    color:#fff;
+}
+
+#sponser img{
+    width:250px; 
+    display:block; 
+    margin:15px auto;
+}
+/* --- File List Section (파일 목록) --- */
+.file-list-section {
+    margin-bottom: 20px;
+    background-color: #2d3748; 
+    border-radius: 8px;
+}
+/* 파일 목록 섹션 제목 색상: 중간 톤의 블루-그레이 */
+.file-list-section h2 {
+    color: #90a4ae;
+}
+
+#file-list {
+    list-style: none;
+    padding: 0;
+}
+
+#file-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #3f4a5a; 
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* 파일 목록 활성 색상: 중간 톤의 블루-그레이 */
+#file-list li.active {
+    background-color: #6a809b;
+    color: #1a202c; 
+    font-weight: bold;
+}
+
+#file-list li:hover:not(.active) {
+    background-color: #4a5568;
+}
+
+.file-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.drag-handle, .delete-file-btn {
+    background-color: #5d6e7e;
+    color: #e2e8f0;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+
+.delete-file-btn:hover {
+    background-color: #dc3545; 
+}
+
+.drag-handle:hover {
+    background-color: #6d7f8f;
+}
+
+
+.text-viewer-section {
+    background-color: #2d3748; 
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+/* --- Text Viewer (읽기 모드 핵심 스타일) --- */
+#text-viewer {
+    background-color: #2d3748; 
+    color: #7a7e85; 
+    max-height: 70vh;
+    overflow-y: auto;
+    min-height: 200px; 
+    line-height: 1.8;
+    font-size: 1.1em;    
+    width:850px;
+    resize: vertical;
+}
+
+
+
+.text-viewer-section h2 {
+    display: none;
+}
+
+.text-chunk {
+    display: block;
+    margin-bottom: 1em;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.text-chunk:hover {
+    background-color: #3f4a5a;
+}
+
+/* 현재 읽는 부분: 어둡고 차분한 청회색 하이라이트 */
+.text-chunk.highlight {
+    background-color: #1b2330; 
+    color: #7a7e85; 
+    padding: 8px 5px;
+    margin: -3px 0;
+    border:solid 0.5px #667e91;
+}
+
+
+/* --- Mobile Optimization (850px 이하) --- */
+@media (max-width: 850px) { 
+    .container {
+        flex-direction: column; 
+        padding: 10px;
+        max-width: 100%;
+    }
+    
+    /* 데스크톱 전용 iframe 패널 숨기기 */
+    .desktop-only {
+        display: none !important;
+    }
+    
+    /* 모바일 전용 iframe 패널 표시 */
+    .mobile-only {
+        display: block;
+    }
+
+    #left_panel {
+        max-width: 100%; 
+        width: 100%;
+    }
+    
+    #sponser {
+    width: 100%;
+    }
+
+    #right_button{
+        display:none;
+    }
+
+    /* URL/iframe 패널 스타일 (모바일) */
+    #url_iframe_panel_mobile {
+        order: -1; 
+        margin: 0 auto 20px auto;
+        padding: 10px;
+        width: 95%;
+        max-width: 700px; 
+    }
+
+    /* 모바일 iframe 높이 제한 */
+    #content-frame-mobile {
+        height: 400px;
+        max-height: 50vh; 
+        resize: vertical;
+        width:97%;
+        margin-left:-5px;
+        padding:0 10px 20px 0;
+    }
+
+    .file-list-section, .text-viewer-section, .control-section {
+        max-width: 95%;
+        margin: 0 auto 20px auto;
+        padding: 5px;
+    }
+
+    /* 컨트롤 요소를 세로로 배치하고 전체 폭 사용 */
+    .control-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    #controler_wrap {
+        width: 100%;
+    }
+
+    /* 모바일에서 목소리/속도 컨트롤은 100% 사용 */
+    #voice-control-wrap, #rate-control-wrap {
+        width: 100%;
+    }
+
+    .playback-controls {
+        width: 100%;        
+    }
+    .playback-controls button {
+        flex-grow: 1;
+    }
+    .playback-controls label {
+        flex-grow: 1;
+        margin-left:5px;
+    }
+    
+    #rate-slider, #voice-select {
+        width: calc(100% - 50px);
+    }
+    
+    /* 모바일 전용 버튼 표시 */
+    .mobile-only {
+        display: block;
+    }
+
+    .mobile-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    /* 모바일 버튼 색상: 중간 톤의 블루-그레이 */
+    .mobile-buttons button {
+        background-color: #6a809b;
+        color: #1a202c;
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+        border-radius: 5px;
+        flex: 1;
+        font-weight: bold;
+    }
+}
+
+#text-viewer{
+    max-width:95%;
+}
+
+/* -------------------------------------- */
+/* --- Scrollbar Customization (Nightfall) --- */
+/* -------------------------------------- */
+
+/* 스크롤바 너비/높이 지정 */
+#text-viewer::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* 스크롤바 배경 트랙 */
+#text-viewer::-webkit-scrollbar-track {
+    background: #2d3748; 
+    border-radius: 10px;
+}
+
+/* 스크롤바 핸들 (실제 움직이는 부분) */
+#text-viewer::-webkit-scrollbar-thumb {
+    background-color: #4a5568; 
+    border-radius: 10px;
+}
+
+/* 스크롤바 핸들 호버 시 */
+#text-viewer::-webkit-scrollbar-thumb:hover {
+    background-color: #6a809b; 
+}
+
+/* @media (prefers-color-scheme: dark) {} 블록은 이미 globals.css에 있었으므로 다시 추가하지 않습니다. */
+/* @import "tailwindcss"는 이미 맨 처음에 있습니다. */
