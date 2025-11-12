@@ -428,7 +428,29 @@ async function fetchAndProcessUrlContent(url) {
         stopReading();
         
         const response = await fetch(targetUrl);
-        if (!response.ok) throw new Error(`HTTP 오류: ${response.status}`);
+        
+        // 🚨 수정: 프록시 서버에서 보낸 JSON 에러 응답을 더 강력하게 처리합니다.
+        if (!response.ok) {
+            let errorMessage = `HTTP 오류: ${response.status}. 콘텐츠 로드에 실패했습니다.`;
+            
+            try {
+                // 프록시 서버(route.ts)에서 JSON 에러를 보냈는지 확인합니다.
+                const errorData = await response.json();
+                if (errorData.error) {
+                    errorMessage = `프록시 오류: ${errorData.error}. 원인: 대상 서버(예: Cloudflare)에서 차단되었습니다.`;
+                } else {
+                    errorMessage = `HTTP 오류: ${response.status}. 원본 서버 오류.`;
+                }
+            } catch (e) {
+                // JSON 파싱 실패 시, 일반 HTTP 오류로 처리합니다.
+                // Cloudflare 차단 시, 응답이 HTML 캡차 페이지일 수 있습니다.
+                if (response.status === 403 || response.status === 404) {
+                     errorMessage = `HTTP 오류: ${response.status}. 대상 서버(Cloudflare)에서 요청을 거부했습니다. (봇 감지 가능성)`;
+                }
+            }
+            
+            throw new Error(errorMessage);
+        }
         
         const htmlText = await response.text();
         const parser = new DOMParser();
