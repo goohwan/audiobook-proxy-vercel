@@ -461,7 +461,7 @@ async function fetchAndProcessUrlContent(url) {
         doc.querySelectorAll(selectorsToRemove).forEach(el => el.remove());
         // ------------------------------------------------------------------
         
-        const contentCandidates = Array.from(doc.querySelectorAll('article, main, .post, .entry, .content, #content, #novel_text, #novel_drawing'));
+        const contentCandidates = Array.from(doc.querySelectorAll('article, main, .post, .entry, .content, #viewer_no_drag, #content, #novel_box, #novel_text, #novel_drawing'));
         let bestText = '';
         let maxTextLength = 0;
         
